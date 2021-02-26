@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.yg.mapper.ProjectStartMapper">
+    <resultMap id="BaseResultMap" type="cn.com.yg.dto.ProjectStartDTO">
+        <id column="id" property="id"/>
+        <result column="business_type" property="businessType"/>
+        <result column="business_unit" property="businessUnit"/>
+        <result column="owner_name" property="ownerName"/>
+        <result column="approval_apply_date" property="approvalApplyDate"/>
+        <result column="project_code" property="projectCode"/>
+        <result column="project_name" property="projectName"/>
+        <result column="undertake_mode" property="undertakeMode"/>
+        <result column="business_source" property="businessSource"/>
+        <result column="large_area" property="largeArea"/>
+        <result column="project_place" property="projectPlace"/>
+        <result column="valuation_method" property="valuationMethod"/>
+        <result column="project_build_area" property="projectBuildArea"/>
+        <result column="expect_start_date" property="expectStartDate"/>
+        <result column="expect_completed_date" property="expectCompletedDate"/>
+        <result column="contract_period" property="contractPeriod"/>
+        <result column="contract_sign_unit" property="contractSignUnit"/>
+        <result column="contract_amount" property="contractAmount"/>
+        <result column="project_format" property="projectFormat"/>
+        <result column="other_project_format" property="otherProjectFormat"/>
+        <result column="contract_mode" property="contractMode"/>
+        <result column="other_contract_mode" property="otherContractMode"/>
+        <result column="expect_profit_margin" property="expectProfitMargin"/>
+        <result column="expect_total_amount" property="expectTotalAmount"/>
+        <result column="expect_total_cost" property="expectTotalCost"/>
+        <result column="open_cost" property="openCost"/>
+        <result column="expect_tender_date" property="expectTenderDate"/>
+        <result column="open_cost_margin" property="openCostMargin"/>
+        <result column="territory_cost" property="territoryCost"/>
+        <result column="territory_cost_margin" property="territoryCostMargin"/>
+        <result column="target_profit_margin" property="targetProfitMargin"/>
+        <result column="target_profit" property="targetProfit"/>
+        <result column="team_average_number" property="teamAverageNumber"/>
+        <result column="expect_average_value" property="expectAverageValue"/>
+        <result column="contract_unit_type" property="contractUnitType"/>
+        <result column="danger_big_project" property="dangerBigProject"/>
+        <result column="project_description" property="projectDescription"/>
+        <result column="project_risk" property="projectRisk"/>
+        <result column="modify_description" property="modifyDescription"/>
+        <result column="deleted" property="deleted"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_user_id" property="createUserId"/>
+        <result column="create_user_name" property="createUserName"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_user_id" property="updateUserId"/>
+        <result column="version" property="version"/>
+        <result column="approve_manage_id" property="approveManageId"/>
+        <result column="is_new_owner" property="isNewOwner"/>
+        <result column="is_new_area" property="isNewArea"/>
+        <result column="is_focus" property="isFocus"/>
+        <result column="win_bid_date" property="winBidDate"/>
+        <result column="approve_state" property="approveState"/>
+        <result column="approve_end_date" property="approveEndDate"/>
+        <result column="contract_leader" property="contractLeader"/>
+        <result column="technical_leader" property="technicalLeader"/>
+        <result column="project_leader" property="projectLeader"/>
+        <result column="project_group" property="projectGroup"/>
+        <result column="product_segment" property="productSegment"/>
+        <result column="oa_flow_id" property="oaFlowId"/>
+        <result column="oa_flow_url" property="oaFlowUrl"/>
+        <result column="financial_item_code" property="financialItemCode"/>
+        <result column="is_old_data" property="isOldData"></result>
+        <result column="project_name_editable" property="projectNameEditable"></result>
+        <result column="risk_mortgage_amount" property="riskMortgageAmount"></result>
+        <result column="is_exist_code" property="isExistCode"></result>
+        <result column="is_fit_report" property="isFitReport"></result>
+        <result column="direct_project_nature" property="directProjectNature"></result>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        tm.id,tm.business_type,tm.business_unit,tm.owner_name,tm.approval_apply_date,tm.project_code,tm.project_name,
+        tm.undertake_mode,tm.business_source,tm.large_area,tm.project_place,
+        tm.valuation_method,tm.project_build_area,tm.expect_start_date,tm.expect_completed_date,tm.contract_period,tm.contract_sign_unit,
+        tm.contract_amount,tm.project_format,tm.other_project_format,tm.contract_mode,tm.other_contract_mode,
+        tm.expect_profit_margin,tm.expect_total_amount,tm.expect_total_cost,tm.open_cost,tm.expect_tender_date,
+        tm.open_cost_margin,tm.territory_cost,tm.territory_cost_margin,tm.target_profit_margin,tm.target_profit,tm.team_average_number,
+        tm.expect_average_value,tm.contract_unit_type,tm.danger_big_project,tm.project_description,tm.project_risk,tm.modify_description,
+        tm.deleted,tm.create_time,tm.create_user_id,tm.create_user_name,tm.update_time,tm.update_user_id,
+        tm.version,tm.approve_manage_id,tm.is_new_owner,tm.is_new_area,tm.is_focus,tm.win_bid_date,tm.approve_state,tm.approve_end_date,
+        tm.contract_leader,tm.technical_leader,tm.project_leader,tm.project_group,tm.oa_flow_id,tm.oa_flow_url,tm.product_segment,tm.financial_item_code,
+        tm.is_old_data,tm.project_name_editable,tm.risk_mortgage_amount,tm.is_exist_code,tm.is_fit_report,tm.direct_project_nature
+    </sql>
+
+    <update id="logicDeleteByIds" parameterType="java.util.List">
+        UPDATE t_project_start SET deleted=1 WHERE id IN
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <select id="listByPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_project_start tm
+        <include refid="Entity_Where_Clause"/>
+    </select>
+
+    <select id="listBaseInfoByPage" resultMap="BaseResultMap">
+        SELECT
+        tm.*,
+        tm.project_city as project_place
+        FROM t_project_info tm
+        <include refid="Entity_Where_Clause02"/>
+        order by update_time desc
+    </select>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_project_start tm
+        <include refid="Entity_Where_Clause"/>
+    </select>
+
+    <sql id="Entity_Where_Clause">
+        <where>
+            <if test="vo.id!=null and vo.id!=''">
+                AND tm.id=#{vo.id}
+            </if>
+            <if test="vo.businessUnit!=null and vo.businessUnit!=''">
+                AND tm.business_unit=#{vo.businessUnit}
+            </if>
+            <if test="vo.ownerName!=null and vo.ownerName!=''">
+                AND tm.owner_name=#{vo.ownerName}
+            </if>
+            <if test="vo.approvalApplyDate!=null ">
+                AND tm.approval_apply_date=#{vo.approvalApplyDate}
+            </if>
+            <if test="vo.projectCode!=null and vo.projectCode!=''">
+                AND tm.project_code LIKE CONCAT('%',#{vo.projectCode},'%')
+            </if>
+            <if test="vo.projectName!=null and vo.projectName!=''">
+                AND tm.project_name LIKE CONCAT('%',#{vo.projectName},'%')
+            </if>
+            <if test="vo.undertakeMode!=null and vo.undertakeMode!=''">
+                AND tm.undertake_mode=#{vo.undertakeMode}
+            </if>
+            <if test="vo.businessSource!=null and vo.businessSource!=''">
+                AND tm.business_source=#{vo.businessSource}
+            </if>
+            <if test="vo.largeArea!=null and vo.largeArea!=''">
+                AND tm.large_area=#{vo.largeArea}
+            </if>
+            <if test="vo.projectPlace!=null and vo.projectPlace!=''">
+                AND tm.project_place=#{vo.projectPlace}
+            </if>
+            <if test="vo.valuationMethod!=null and vo.valuationMethod!=''">
+                AND tm.valuation_method=#{vo.valuationMethod}
+            </if>
+            <if test="vo.projectBuildArea!=null ">
+                AND tm.project_build_area=#{vo.projectBuildArea}
+            </if>
+            <if test="vo.expectStartDate!=null ">
+                AND tm.expect_start_date=#{vo.expectStartDate}
+            </if>
+            <if test="vo.expectCompletedDate!=null ">
+                AND tm.expect_completed_date=#{vo.expectCompletedDate}
+            </if>
+            <if test="vo.contractPeriod!=null ">
+                AND tm.contract_period=#{vo.contractPeriod}
+            </if>
+            <if test="vo.contractSignUnit!=null and vo.contractSignUnit!=''">
+                AND tm.contract_sign_unit=#{vo.contractSignUnit}
+            </if>
+            <if test="vo.contractAmount!=null ">
+                AND tm.contract_amount=#{vo.contractAmount}
+            </if>
+            <if test="vo.projectFormat!=null and vo.projectFormat!=''">
+                AND tm.project_format=#{vo.projectFormat}
+            </if>
+            <if test="vo.otherProjectFormat!=null and vo.otherProjectFormat!=''">
+                AND tm.other_project_format=#{vo.otherProjectFormat}
+            </if>
+            <if test="vo.contractMode!=null and vo.contractMode!=''">
+                AND tm.contract_mode=#{vo.contractMode}
+            </if>
+            <if test="vo.otherContractMode!=null and vo.otherContractMode!=''">
+                AND tm.other_contract_mode=#{vo.otherContractMode}
+            </if>
+            <if test="vo.expectProfitMargin!=null ">
+                AND tm.expect_profit_margin=#{vo.expectProfitMargin}
+            </if>
+            <if test="vo.expectTotalAmount!=null ">
+                AND tm.expect_total_amount=#{vo.expectTotalAmount}
+            </if>
+            <if test="vo.expectTotalCost!=null ">
+                AND tm.expect_total_cost=#{vo.expectTotalCost}
+            </if>
+            <if test="vo.openCost!=null ">
+                AND tm.open_cost=#{vo.openCost}
+            </if>
+            <if test="vo.expectTenderDate!=null ">
+                AND tm.expect_tender_date=#{vo.expectTenderDate}
+            </if>
+            <if test="vo.openCostMargin!=null ">
+                AND tm.open_cost_margin=#{vo.openCostMargin}
+            </if>
+            <if test="vo.territoryCost!=null ">
+                AND tm.territory_cost=#{vo.territoryCost}
+            </if>
+            <if test="vo.territoryCostMargin!=null ">
+                AND tm.territory_cost_margin=#{vo.territoryCostMargin}
+            </if>
+            <if test="vo.targetProfitMargin!=null ">
+                AND tm.target_profit_margin=#{vo.targetProfitMargin}
+            </if>
+            <if test="vo.targetProfit!=null ">
+                AND tm.target_profit=#{vo.targetProfit}
+            </if>
+            <if test="vo.teamAverageNumber!=null ">
+                AND tm.team_average_number=#{vo.teamAverageNumber}
+            </if>
+            <if test="vo.expectAverageValue!=null ">
+                AND tm.expect_average_value=#{vo.expectAverageValue}
+            </if>
+            <if test="vo.contractUnitType!=null and vo.contractUnitType!=''">
+                AND tm.contract_unit_type=#{vo.contractUnitType}
+            </if>
+            <if test="vo.dangerBigProject!=null and vo.dangerBigProject!=''">
+                AND tm.danger_big_project=#{vo.dangerBigProject}
+            </if>
+            <if test="vo.projectDescription!=null and vo.projectDescription!=''">
+                AND tm.project_description=#{vo.projectDescription}
+            </if>
+            <if test="vo.projectRisk!=null and vo.projectRisk!=''">
+                AND tm.project_risk=#{vo.projectRisk}
+            </if>
+            <if test="vo.modifyDescription!=null and vo.modifyDescription!=''">
+                AND tm.modify_description=#{vo.modifyDescription}
+            </if>
+            <if test="vo.updateTime!=null ">
+                AND tm.update_time=#{vo.updateTime}
+            </if>
+            <if test="vo.deleted!=null">
+                AND tm.deleted=#{vo.deleted}
+            </if>
+            <if test="vo.updateUserId!=null and vo.updateUserId!=''">
+                AND tm.update_user_id=#{vo.updateUserId}
+            </if>
+            <if test="vo.version!=null ">
+                AND tm.version=#{vo.version}
+            </if>
+            <if test="vo.approveManageId!=null and vo.approveManageId!=''">
+                AND tm.approve_manage_id=#{vo.approveManageId}
+            </if>
+
+            <if test="vo.isNewOwner!=null and vo.isNewOwner!=''">
+                AND tm.is_new_owner=#{vo.isNewOwner}
+            </if>
+            <if test="vo.isNewArea!=null and vo.isNewArea!=''">
+                AND tm.is_new_area=#{vo.isNewArea}
+            </if>
+            <if test="vo.isFocus!=null and vo.isFocus!=''">
+                AND tm.is_focus=#{vo.isFocus}
+            </if>
+            <if test="vo.winBidDate!=null">
+                AND tm.win_bid_date=#{vo.winBidDate}
+            </if>
+            <if test="vo.approveState!=null and vo.approveState!=''">
+                AND tm.approve_state=#{vo.approveState}
+            </if>
+            <if test="vo.approveEndDate!=null">
+                AND tm.approve_end_date=#{vo.approveEndDate}
+            </if>
+            <if test="vo.contractLeader!=null and vo.contractLeader!=''">
+                AND tm.contract_leader=#{vo.contractLeader}
+            </if>
+            <if test="vo.technicalLeader!=null and vo.technicalLeader!=''">
+                AND tm.technical_leader=#{vo.technicalLeader}
+            </if>
+            <if test="vo.projectLeader!=null and vo.projectLeader!=''">
+                AND tm.project_leader=#{vo.projectLeader}
+            </if>
+            <if test="vo.projectGroup!=null and vo.projectGroup!=''">
+                AND tm.project_group=#{vo.projectGroup}
+            </if>
+            <if test="vo.oaFlowId!=null and vo.oaFlowId!=''">
+                AND tm.oa_flow_id=#{vo.oaFlowId}
+            </if>
+            <if test="vo.productSegment!=null and vo.productSegment!=''">
+                AND tm.product_segment=#{vo.productSegment}
+            </if>
+            <if test="vo.financialItemCode!=null and vo.financialItemCode!=''">
+                AND tm.financial_item_code=#{vo.financialItemCode}
+            </if>
+            <if test="vo.isOldData!=null and vo.isOldData!=''">
+                AND tm.is_old_data=#{vo.isOldData}
+            </if>
+            <if test="vo.projectNameEditable!=null and vo.projectNameEditable!=''">
+                AND tm.project_name_editable=#{vo.projectNameEditable}
+            </if>
+            <if test="vo.businessUnits!=null and vo.businessUnits.size>0 and vo.createUserId!=null and vo.createUserId!=''">
+                AND ( tm.create_user_id=#{vo.createUserId}
+                OR tm.business_unit in
+                <foreach item="businessUnit" collection="vo.businessUnits" open="(" separator=","
+                         close=")">
+                    #{businessUnit}
+                </foreach>
+                )
+            </if>
+            <if test="vo.companyCodes!=null and vo.companyCodes.size>0">
+                AND tm.contract_sign_unit in
+                <foreach item="companyCode" collection="vo.companyCodes" open="(" separator=","
+                         close=")">
+                    #{companyCode}
+                </foreach>
+            </if>
+            <if test="(vo.businessUnits==null or vo.businessUnits.size==0)  and vo.createUserId!=null and vo.createUserId!=''">
+                AND ( tm.create_user_id=#{vo.createUserId} )
+            </if>
+        </where>
+
+    </sql>
+
+    <sql id="Entity_Where_Clause02">
+        <where>
+            <if test="vo.id!=null and vo.id!=''">
+                AND tm.id=#{vo.id}
+            </if>
+            <if test="vo.businessUnit!=null and vo.businessUnit!=''">
+                AND tm.business_unit=#{vo.businessUnit}
+            </if>
+            <if test="vo.ownerName!=null and vo.ownerName!=''">
+                AND tm.owner_name=#{vo.ownerName}
+            </if>
+            <if test="vo.projectCode!=null and vo.projectCode!=''">
+                AND tm.project_code LIKE CONCAT('%',#{vo.projectCode},'%')
+            </if>
+            <if test="vo.projectName!=null and vo.projectName!=''">
+                AND tm.project_name LIKE CONCAT('%',#{vo.projectName},'%')
+            </if>
+            <if test="vo.undertakeMode!=null and vo.undertakeMode!=''">
+                AND tm.undertake_mode=#{vo.undertakeMode}
+            </if>
+            <if test="vo.businessSource!=null and vo.businessSource!=''">
+                AND tm.business_source=#{vo.businessSource}
+            </if>
+            <if test="vo.projectPlace!=null and vo.projectPlace!=''">
+                AND tm.project_place=#{vo.projectPlace}
+            </if>
+            <if test="vo.valuationMethod!=null and vo.valuationMethod!=''">
+                AND tm.valuation_method=#{vo.valuationMethod}
+            </if>
+            <if test="vo.contractSignUnit!=null and vo.contractSignUnit!=''">
+                AND tm.contract_sign_unit=#{vo.contractSignUnit}
+            </if>
+            <if test="vo.contractAmount!=null ">
+                AND tm.contract_amount=#{vo.contractAmount}
+            </if>
+            <if test="vo.productSegment!=null and vo.productSegment!=''">
+                AND tm.product_segment=#{vo.productSegment}
+            </if>
+            <if test="vo.businessUnits!=null and vo.businessUnits.size>0 and vo.createUserId!=null and vo.createUserId!=''">
+                AND ( tm.create_user_id=#{vo.createUserId}
+                OR tm.business_unit in
+                <foreach item="businessUnit" collection="vo.businessUnits" open="(" separator=","
+                         close=")">
+                    #{businessUnit}
+                </foreach>
+                )
+            </if>
+            <if test="vo.companyCodes!=null and vo.companyCodes.size>0">
+                AND tm.contract_sign_unit in
+                <foreach item="companyCode" collection="vo.companyCodes" open="(" separator=","
+                         close=")">
+                    #{companyCode}
+                </foreach>
+            </if>
+            <if test="(vo.businessUnits==null or vo.businessUnits.size==0)  and vo.createUserId!=null and vo.createUserId!=''">
+                AND ( tm.create_user_id=#{vo.createUserId} )
+            </if>
+
+            AND tm.deleted=0
+        </where>
+
+    </sql>
+
+</mapper>
+
