@@ -3,7 +3,7 @@ package cn.com.yg.common;
 import com.alibaba.druid.wall.violation.ErrorCode;
 import org.springframework.http.HttpStatus;
 
-public enum CommonError implements ErrorCode, ErrorCode {
+public enum CommonError implements ErrorCode, cn.com.yg.common.ErrorCode {
     SYSTEM_ERROR(HttpStatus.INTERNAL_SERVER_ERROR),
     MISSING_VALUE,
     EMPTY_VALUE,

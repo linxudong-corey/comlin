@@ -7,9 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="yanguojiaoyu" />
+        <module name="com.lin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="com.lin" target="8" />
       <module name="yanguojiaoyu" target="8" />
     </bytecodeTargetLevel>
   </component>
